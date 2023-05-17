@@ -66,7 +66,6 @@ Function Check-ISO{
 
     Catch{
       Write-Host "Please enter the correct Drive Letter for the iso/dvd"
-      Break
     }
   }
 }
