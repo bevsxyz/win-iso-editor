@@ -26,7 +26,10 @@
 # Get command line arguments.
 # https://stackoverflow.com/a/5592684/6346131
 # https://www.red-gate.com/simple-talk/sysadmin/powershell/how-to-use-parameters-in-powershell/
-$param1 = $args[0]
+Param(
+  [Parameter(Mandatory=$true)]
+  [ValidatePattern("^[d-z]$")][string]$drive
+  )
 
 # Set Error Action to Silently Continue
 $ErrorActionPreference = "SilentlyContinue"
