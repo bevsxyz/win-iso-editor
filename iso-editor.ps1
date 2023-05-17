@@ -32,10 +32,10 @@ Param(
   )
 
 # Set Error Action to Silently Continue
-$ErrorActionPreference = "SilentlyContinue"
+#$ErrorActionPreference = "SilentlyContinue"
 
 # Dot Source required Function Libraries
-. "C:\Scripts\Functions\Logging_Functions.ps1"
+#. "C:\Scripts\Functions\Logging_Functions.ps1"
 
 # -------------------------------- [Declarations] ------------------------------- #
 
@@ -44,8 +44,6 @@ $sScriptVersion = "1.1"
 
 # Log File Info
 $sLogPath = "C:\Windows\Temp"
-$sLogName = "<script_name>.log"
-$sLogFile = Join-Path -Path $sLogPath -ChildPath $sLogName
 
 # --------------------------------- [Functions] --------------------------------- #
 
@@ -53,39 +51,35 @@ Function Check-ISO{
   Param()
 
   Begin{
-    Log-Write -LogPath $sLogFile -LineValue "<description of what is going on>..."
+    Write-Host "Checking the provided DRIVE"
   }
 
   Process{
     Try{
       if ((-not (Test-Path -Path "$driveletter\sources\boot.wim")) `
         -or (-not (Test-Path -Path "$driveletter\sources\install.wim"))){
-        throw "Can't find Windows OS Installation files in $driveletter\:"
+
+        throw "Can't find Windows OS Installation files in $driveletter:\"
+
       }
     }
 
     Catch{
-      Log-Error -LogPath $sLogFile -ErrorDesc $_.Exception -ExitGracefully $True
+      Write-Host "Please enter the correct Drive Letter for the iso/dvd"
       Break
-    }
-  }
-
-  End{
-    If($?){
-      Log-Write -LogPath $sLogFile -LineValue "Completed Successfully."
-      Log-Write -LogPath $sLogFile -LineValue " "
     }
   }
 }
 
 # --------------------------------- [Execution] --------------------------------- #
 
-Log-Start -LogPath $sLogPath -LogName $sLogName -ScriptVersion $sScriptVersion
+Start-Transcript -OutputDirectory $sLogPath
 
 # Script Execution goes here
 # ...
 Check-ISO
 
-Log-Finish -LogPath $sLogFile
+Write-Host "Outside"
 
+Stop-Transcript
 # ------------------------------------ [END] ------------------------------------ #
