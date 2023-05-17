@@ -59,7 +59,7 @@ Function Check-ISO{
       if ((-not (Test-Path -Path "$driveletter\sources\boot.wim")) `
         -or (-not (Test-Path -Path "$driveletter\sources\install.wim"))){
 
-        throw "Can't find Windows OS Installation files in $driveletter:\"
+        throw "Can't find Windows OS Installation files in ${driveletter}:\"
 
       }
     }
