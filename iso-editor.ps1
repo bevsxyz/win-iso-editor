@@ -28,7 +28,7 @@
 # https://www.red-gate.com/simple-talk/sysadmin/powershell/how-to-use-parameters-in-powershell/
 Param(
   [Parameter(Mandatory=$true)]
-  [ValidatePattern("^[d-z]$")][string]$drive
+  [ValidatePattern("^[d-z]$")][string]$driveletter
   )
 
 # Set Error Action to Silently Continue
@@ -49,7 +49,7 @@ $sLogFile = Join-Path -Path $sLogPath -ChildPath $sLogName
 
 # --------------------------------- [Functions] --------------------------------- #
 
-Function Function-Name{
+Function Check-ISO{
   Param()
 
   Begin{
@@ -58,7 +58,10 @@ Function Function-Name{
 
   Process{
     Try{
-      <code goes here>
+      if ((-not (Test-Path -Path "$driveletter\sources\boot.wim")) `
+        -or (-not (Test-Path -Path "$driveletter\sources\install.wim"))){
+        throw "Can't find Windows OS Installation files in $driveletter\:"
+      }
     }
 
     Catch{
@@ -81,6 +84,7 @@ Log-Start -LogPath $sLogPath -LogName $sLogName -ScriptVersion $sScriptVersion
 
 # Script Execution goes here
 # ...
+Check-ISO
 
 Log-Finish -LogPath $sLogFile
 
