@@ -75,9 +75,9 @@ Function Check-ISO{
   Process{
 
     Try{
-      [ValidateScript( $_ -in ($image_data | Select-Object -ExpandProperty ImageIndex)]
+      [ValidateScript({$_ -in ($image_data | Select-Object -ExpandProperty ImageIndex})]
       [int]$global:index = Read-Host -Prompt "Enter the index of the image you wish to proceed with"
-          }
+    }
     Catch{
       Write-Host "We are facing an issue mounting the specified drive"
     }
