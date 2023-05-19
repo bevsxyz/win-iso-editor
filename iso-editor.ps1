@@ -79,7 +79,7 @@ Function Check-ISO{
       [int]$global:index = Read-Host -Prompt "Enter the index of the image you wish to proceed with"
     }
     Catch{
-      Write-Host "We are facing an issue mounting the specified drive"
+      Write-Host "The input $index is out of scope!!"
     }
   }
 }
