@@ -52,9 +52,6 @@ Function Check-ISO{
 
   Begin{
     Write-Host "Checking the provided DRIVE"
-  }
-
-  Process{
     Try{
       if ((-not (Test-Path -Path "${driveletter}:\sources\boot.wim")) `
         -or (-not (Test-Path -Path "${driveletter}:\sources\install.wim"))){
@@ -62,10 +59,27 @@ Function Check-ISO{
         throw "Can't find Windows OS Installation files in ${driveletter}:\"
 
       }
+      else {
+        Write-Host "${driveletter}:\ has Windows Installation files"
+      }
+      Copy-Item -Path ${driveletter}:\* -Destination "c:\tiny10" -Force -Recurse
+      $image_data = Get-WindowsImage -ImagePath C:\tiny10\sources\install.wim
+      Format-Table -Property ImageName, ImageIndex, ImageSize -InputObject $image_data
     }
 
     Catch{
       Write-Host "Please enter the correct Drive Letter for the iso/dvd"
+    }
+  }
+
+  Process{
+
+    Try{
+      [ValidateScript( $_ -in ($image_data | Select-Object -ExpandProperty ImageIndex)]
+      [int]$global:index = Read-Host -Prompt "Enter the index of the image you wish to proceed with"
+          }
+    Catch{
+      Write-Host "We are facing an issue mounting the specified drive"
     }
   }
 }
@@ -77,6 +91,7 @@ Start-Transcript -OutputDirectory $sLogPath
 # Script Execution goes here
 # ...
 Check-ISO
+
 
 Write-Host "Outside"
 
